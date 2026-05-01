@@ -47,3 +47,6 @@ Route::get('/user',[UserController::class,'index']);
 Route::get('/user/order-history',[UserController::class,'order_history']);
 
 Route::get('/user/detail',[UserController::class,'user_detail']);
+
+
+Route::get('/user/setting',[UserController::class,'setting']);

@@ -18,7 +18,7 @@
                     Order History
                 </a>
 
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ url('user/setting') }}">
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-gear"></i>
                     </div>

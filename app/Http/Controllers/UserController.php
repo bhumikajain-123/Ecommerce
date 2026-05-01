@@ -37,4 +37,8 @@ class UserController extends Controller
         return view ('user/detail');
  
     }
+
+    public function setting(){
+        return view ('user/setting');
+    }
 }
