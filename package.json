@@ -1,15 +1,18 @@
 {
- 
+ 
   "dependencies": {
- 
-   
+ 
+   
+  "bcrypt": "^6.0.0",
+ 
+   
   "express": "^5.2.1",
- 
-   
+ 
+   
   "mongodb": "^7.5.0",
- 
-   
+ 
+   
   "mongoose": "^9.8.0"
- 
+ 
   }
 }
