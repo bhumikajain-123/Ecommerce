@@ -2,7 +2,7 @@ const mongoose =  require("../config/db");
 
 const productSchema = new mongoose.Schema({
 
- categoryId : {
+ category : {
    type : mongoose.Schema.Types.ObjectId,
    ref : "Category",
    required : true
