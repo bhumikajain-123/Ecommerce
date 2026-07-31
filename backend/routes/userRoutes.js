@@ -2,6 +2,8 @@ const express = require("express");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
+const auth = require("../middleware/auth");
 
 
 
@@ -43,10 +45,43 @@ if(!ismatch){
 return res.status(401).send("Invalid password");
 }
 
-return res.send("login successfull");
 
+//  jwt.sign(payload, secretKey, options);
+const tokens = jwt.sign(
+    {id : user._id,
+     role : user.role
+    },
+    
+    "mysecretkey",
+    {expiresIn : "7d"}
 
+);
 
+return res.json({
+    message : "login Successfull",
+    tokens
 });
+});
+
+// const result = await jwt.verify(tokens,"mysecretkey");
+
+router.get("/profile",auth,(req,res)=>{
+try{
+  
+
+    res.json({
+        message : "profile",
+        userId : req.user.id,
+        role : req.user.role
+
+    });
+}
+catch(err){
+    res.status(500).send(err.message);
+}
+});
+
+
+
 
 module.exports = router;
