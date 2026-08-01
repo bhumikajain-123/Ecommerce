@@ -6,26 +6,30 @@ const orderSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    
+    addressId :{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "Address",
+        required:true
+    },
     totalAmount: {
         type: Number,
         required: true
     },
+    status: {
+    type: String,
+    enum: [
+        "Pending",
+        "Confirmed",
+        "Shipped",
+        "Delivered",
+        "Cancelled"
+    ],
+    default: "Pending"
+}
 
-    status:{
-        type:String,
-        enum:["Pending","Processing","Shipped","Delivered"],
-        default:"Pending"
-    },
-    createdAt : {
-        type : Date,
-        default : Date.now
-    },
-    updatedAt : {
-        type : Date,
-        default : Date.now
-    }
-});
+   
+  
+},{ timestamps: true });
 
 const Order = mongoose.model("Order",orderSchema);
 
