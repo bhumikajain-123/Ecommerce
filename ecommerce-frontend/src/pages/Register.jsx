@@ -2,6 +2,7 @@ import { useState } from "react";
 import { validate } from "../validations/registerValidation";
 import { registerUser } from "../service/authService";
 import "./Register.css";
+import { Link } from "react-router-dom";
 
 
 function Register() {
@@ -12,6 +13,7 @@ function Register() {
     password: "",
     confirmPassword: "",
   });
+  
 
   const [errors, setErrors] = useState({});
   const[backendError,setBackendError] = useState({});
@@ -128,7 +130,7 @@ function Register() {
 
       <div className="login-link">
         Already have an account?
-        <a href="/login"> Login</a>
+        <Link to="/login"> Login</Link>
       </div>
 
     </form>

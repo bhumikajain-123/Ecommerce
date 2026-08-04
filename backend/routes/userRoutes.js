@@ -123,7 +123,7 @@ router.post("/login", async (req, res) => {
     });
 
   } catch (err) {
-    console.error(err);
+  
 
     return res.status(500).json({
       success: false,
@@ -135,11 +135,16 @@ router.post("/login", async (req, res) => {
 // ===========================
 // Profile
 // ===========================
-router.get("/profile", auth, (req, res) => {
+router.get("/profile", auth, async (req, res) => {
   try {
+
+    const user = await User.findById(req.user.id);
+
     return res.status(200).json({
       message: "Profile",
       userId: req.user.id,
+      name :user.name,
+      email : user.email,
       role: req.user.role,
     });
   } catch (err) {
