@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 import Logout from "./pages/Logout"
 import Categories from "./components/categories/Categories";
 import ProductDetail from "./components/product/ProductDetail";
+import FilterProduct from "./components/product/FilterProduct";
 import Address from "./pages/Address"
 import Cart from "../src/pages/Cart";
 import Order from "../src/pages/Order"
@@ -46,6 +47,7 @@ function App() {
   path="/order/success/:id"
   element={<Ordersuccess />}
 />
+<Route path="/category/:id" element = {<FilterProduct/>}/>
       </Routes>
     </BrowserRouter>
   );
