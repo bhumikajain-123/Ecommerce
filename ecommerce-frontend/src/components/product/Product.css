@@ -1,0 +1,17 @@
+.product-card {
+  transition: 0.3s;
+  border-radius: 12px;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+}
+
+.product-card img {
+  height: 220px;
+  object-fit: cover;
+}
+
+.product-card button {
+  margin-top: 10px;
+}

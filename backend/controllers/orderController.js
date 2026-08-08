@@ -48,7 +48,7 @@ const getCartItem = async (req, res) => {
 const placeOrder = async (req,res) =>{
     try {
         const userId = req.user.id;
-      
+      const addressId = req.params.id;
         const userCart = await cart.findOne({
             userId: req.user.id
         });
@@ -69,7 +69,16 @@ const placeOrder = async (req,res) =>{
             0
         );
 
-        const Address = await address.findOne({userId});
+           const Address = await address.findOne({
+      _id: addressId,
+      userId: userId
+    });
+
+     if (!Address) {
+      return res.status(404).json({
+        message: "Address not found"
+      });
+    }
 
 const placeItem = new order({userId,addressId : Address._id,totalAmount});
 

@@ -1,0 +1,19 @@
+.category-card {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 30px 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.category-card:hover {
+  background-color: #ffc107;
+  color: white;
+  transform: translateY(-5px);
+}
+
+.category-card h5 {
+  margin: 0;
+  font-weight: bold;
+}

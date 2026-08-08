@@ -1,4 +1,7 @@
+import "./Navbar.css";
+import { Link } from "react-router-dom";
 function Navbar() {
+  const token = localStorage.getItem("token");
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
       <div className="container-fluid px-4">
@@ -61,13 +64,16 @@ function Navbar() {
               ❤️ Wishlist
             </a>
 
-            <a href="#" className="nav-link text-white">
-              🛒 Cart
-            </a>
-
-            <button className="btn btn-warning">
-              Login
-            </button>
+           <Link to="/cart" className="nav-link text-white">
+  🛒 Cart
+</Link>
+   {token ?  (<button className="btn btn-danger">Logout</button>)
+              
+            : 
+            (
+    <button className="btn btn-warning">Login</button>
+  ) }
+           
           </div>
 
         </div>

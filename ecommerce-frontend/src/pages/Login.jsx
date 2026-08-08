@@ -1,8 +1,9 @@
 import { useState } from "react"
 import  loginService  from "../service/loginService";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-
+const navigate = useNavigate();
 const [error, setError] = useState({});
 const [formData, setFormData] = useState({
   email: "",
@@ -15,15 +16,29 @@ const handleSubmit = async (e) => {
     return;
   }
   const { email, password } = formData;
+  try{
   const loginData = await loginService.login(email, password);
   if(loginData.error) {
     setError({server:loginData.error});
-  }else{
-    alert(loginData.message);
-    localStorage.setItem("token", loginData.token);
+      alert(loginData.error); 
+      return;
+  }
+  localStorage.setItem("token", loginData.token); // Save token
+
+
+  await fetch("http://localhost:5000/cart", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("token")}`
+  }
+});
+ navigate("/"); // Go to Home 
+  }catch(err){
+    console.log(err);
   }
   
-}
+};
 const handleChange = (e) => {
   setFormData({
     ...formData,
