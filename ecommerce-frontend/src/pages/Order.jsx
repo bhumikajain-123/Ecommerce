@@ -3,6 +3,7 @@ import cartItemService from "../service/cartItemService";
 import addressService from "../service/addressService";
 import orderService from "../service/orderService";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 function Order() {
 const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
@@ -237,6 +238,12 @@ const navigate = useNavigate();
                       <p className="small text-secondary mb-0">
                         📞 {address.phone}
                       </p>
+                       <button
+          className="btn btn-outline-primary btn-sm"
+          onClick={() => navigate(`/address/edit/${address._id}`)}
+        >
+          ✏️ Edit
+        </button>
 
                     </div>
 
@@ -247,9 +254,9 @@ const navigate = useNavigate();
               ))}
 
 
-              <button className="btn btn-outline-primary btn-sm w-100">
+              <Link to = "/address" className="btn btn-outline-primary btn-sm w-100">
                 + Add New Address
-              </button>
+              </Link>
 
             </div>
 

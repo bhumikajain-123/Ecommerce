@@ -26,7 +26,7 @@ function Navbar() {
           {/* Menu */}
           <ul className="navbar-nav ms-4">
             <li className="nav-item">
-              <a className="nav-link active" href="#">Home</a>
+              <Link className="nav-link active" to ="/">Home</Link>
             </li>
 
             <li className="nav-item">
@@ -67,11 +67,11 @@ function Navbar() {
            <Link to="/cart" className="nav-link text-white">
   🛒 Cart
 </Link>
-   {token ?  (<button className="btn btn-danger">Logout</button>)
+   {token ?  (<Link to = "/logout" className="btn btn-danger">Logout</Link>)
               
             : 
             (
-    <button className="btn btn-warning">Login</button>
+    <Link  to = "/login" className="btn btn-warning">Login</Link>
   ) }
            
           </div>

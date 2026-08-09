@@ -8,6 +8,7 @@ import Categories from "./components/categories/Categories";
 import ProductDetail from "./components/product/ProductDetail";
 import FilterProduct from "./components/product/FilterProduct";
 import Address from "./pages/Address"
+import EditAddress from "./pages/EditAddress";
 import Cart from "../src/pages/Cart";
 import Order from "../src/pages/Order"
 import AddressManager from "./pages/AddressManager";
@@ -16,6 +17,13 @@ import Ordercheckout from "./pages/OrderCheckout"
 import OrderSummary from "./pages/OrderSummary";
 import Ordersuccess from "./pages/orderSuccess";
 import MyOrders from "./pages/MyOrder";
+
+
+
+// admin-----
+import Dashboard from "./pages/admin/Dashboard"
+import AdminLogin from "./pages/admin/Login";
+
 function App() {
   const token = localStorage.getItem("token");
   return (
@@ -36,9 +44,12 @@ function App() {
           <Route path = "/order" element = {<Order/>} />
           
           <Route path="/addressManger" element = {<AddressManager/>}/>
-          <Route path="/address/edit" element = {<AddressEdit/>}/>
+          <Route path="/address/edit/:id" element={<EditAddress />}/>
+          <Route path="/address/edit/:id" element = {<AddressEdit/>}/>
           <Route path="/order/checkout" element = {<Ordercheckout/>}/>
 <Route path="/order/summary" element = {<OrderSummary/>}/>
+
+
 <Route
   path="/my-orders"
   element={<MyOrders />}
@@ -48,6 +59,12 @@ function App() {
   element={<Ordersuccess />}
 />
 <Route path="/category/:id" element = {<FilterProduct/>}/>
+
+
+{/* admin */}
+
+<Route path = "/admin/login" element = {<AdminLogin/>}/>
+<Route path = "/admin/dashboard" element = {<Dashboard/>}/>
       </Routes>
     </BrowserRouter>
   );

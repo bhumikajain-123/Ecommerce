@@ -42,4 +42,21 @@ const updateAddress = async (id, formData) => {
 
   return await response.json();
 };
-export default { addAddress,getAddress,updateAddress };
+
+
+const getAddressById = async (id) =>{
+ const token = localStorage.getItem("token");
+
+  const response = await fetch(`http://localhost:5000/address/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+   
+  });
+
+  return await response.json();
+};
+
+export default { addAddress,getAddress,updateAddress,getAddressById };

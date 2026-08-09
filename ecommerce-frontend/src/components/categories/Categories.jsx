@@ -1,7 +1,7 @@
 import "./Categories.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import categoryService from "../../service/categoryService";
+
 
 
 function Categories() {
@@ -19,11 +19,7 @@ fetch('http://localhost:5000/category')
 
 },[])
 
-// const handleCategoryClick =  (id) =>{
-// //   const data = await categoryService.filtercategory(id);
-// // setProduct(data.products);
-// navigate(`/category/${id}`)
-// }
+
 
 
 

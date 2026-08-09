@@ -1,5 +1,6 @@
 import cartItemService from "../service/cartItemService";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Cart() {
 
@@ -272,9 +273,9 @@ function Cart() {
               </div>
 
 
-              <button className="btn btn-success w-100 mt-3">
-                🛒 Place Order
-              </button>
+              <Link  to = "/order"className="btn btn-success w-100 mt-3">
+               Continue
+              </Link>
 
 
             </div>

@@ -63,4 +63,35 @@ const deleteAddress = async (req,res)=>{
     
 }
 
-module.exports = {addAddress,getAddress,updateAddress,deleteAddress};
+const getAddressById = async (req, res) => {
+
+  try {
+
+    const { id } = req.params;
+
+    const address = await Address.findById(id);
+
+    if (!address) {
+
+      return res.status(404).json({
+        message: "Address not found"
+      });
+
+    }
+
+    res.status(200).json({
+      message: "Address found",
+      address: address
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: "Error getting address",
+      error: error.message
+    });
+
+  }
+
+};
+module.exports = {addAddress,getAddress,updateAddress,deleteAddress,getAddressById};

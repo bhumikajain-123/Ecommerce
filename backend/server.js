@@ -21,6 +21,25 @@ app.use("/cartItem",cartItemRoutes);
 app.use("/address",addressRoutes);
 app.use("/order",orderRoutes);
 app.use("/orderItem",orderItemRoutes);
+
+
+
+
+//  ----------------admin--------------------------------
+
+const adminLoginRoutes = require("./routes/admin/adminLoginRoutes");
+const dashboardRoutes = require("./routes/admin/DashboardRoutes");
+const admincategoryRoutes = require("./routes/admin/categoryRoutes");
+const adminproductRoutes = require("./routes/admin/productRoutes");
+
+app.use("/admin",adminLoginRoutes);
+app.use("/admin/dashboard", dashboardRoutes);
+app.use("/admin/category",admincategoryRoutes);
+app.use("/admin/product",adminproductRoutes);
 app.listen(5000, () => {
     console.log("Server is running at 5000");
 });
+
+
+
+
