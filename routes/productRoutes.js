@@ -1,7 +1,31 @@
 const express = require("express");
 const router = express.Router();
 const Product = require("../models/Product");
+const Category = require("../models/Category");
 
+
+
+//   ------------------filter product throgh cateogory ------------------------
+
+router.get("/category/:id",async(req,res)=>{
+
+    try{
+           const category = await Category.findById(req.params.id);
+            if (!category) {
+            return res.status(404).json({
+                message: "Category not found"
+            });
+        }
+           const products = await Product.find({
+            category: category._id
+        });
+        res.json({message : "category data",
+            products
+        });
+    }catch(err){
+        res.send(err.message);
+    }
+});
 
 //--------------------------add product -------------------------- 
 

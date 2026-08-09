@@ -61,7 +61,7 @@ const getCartItem = async (req,res)=>{
         const userId = req.user.id;
 const cart = await Cart.findOne({userId});
 
-        const items = await cartItem.find({cartId : cart._id});
+        const items = await cartItem.find({cartId : cart._id}).populate("productId");
 res.status(200).json({
     message : "cart item",
     items
@@ -75,39 +75,33 @@ res.status(200).json({
 
 //  -----------------------------update quantity --------------------------------
 
-const updateQuantity = async (req,res)=>{
+const updateQuantity = async (req, res) => {
+  try {
+    const { action } = req.body;
 
-    try{
-   const {action} = req.body;
-   console.log(action);
-   const cartItemId = req.params.id; 
-const item = await cartItem.findById(cartItemId);
+    const item = await cartItem.findById(req.params.id);
 
-if(!item){
+    if (!item) {
+      return res.status(404).send("Cart item not found");
+    }
 
-     return   res.status(500).send("cart item not found");
+    if (action === "increase") {
+      item.quantity += 1;
+    } else if (action === "decrease" && item.quantity > 1) {
+      item.quantity -= 1;
+    }
 
-}
-if(action === "increase"){
-    item.quantity+=1
-}
-        if (action === "decrease" && item.quantity > 1) {
-            item.quantity -= 1;
-        }
+    await item.save();
 
-await item.save();
+    res.status(200).json({
+      message: "Quantity updated",
+      item,
+    });
 
-res.status(200).json({
-    message : "quantity updated",
-    item
-})
-
-
-
-}catch(err){
+  } catch (err) {
     res.status(500).send(err.message);
-}
-}
+  }
+};
 
 
 // -----------------------------delete cart item ---------------------------------

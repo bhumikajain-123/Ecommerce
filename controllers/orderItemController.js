@@ -6,46 +6,71 @@ const orderItem = require("../models/orderItem");
 
 
 const getOrderItem = async (req, res) => {
+
   try {
-    const cart = await Cart.findOne({ userId: req.user.id });
 
-       if(!cart){
-        return res.status(404).json({
-            message:"Cart not found"
-        });
-    }
+    const orderId = req.params.id;
 
-
-    const cartItems = await cartItem.find({ cartId: cart._id }).populate("productId");
-   
-
-    if(cartItems.length===0){
-        return res.status(400).json({
-            message:"Cart is empty"
-        });
-    }
-    order = await Order.findOne({ userId: req.user.id });
-
-    for(const item of cartItems){
-await orderItem.create({
-    orderId : order._id,
-    productId : item.productId._id,
-    quantity : item.quantity,
-    price : item.price
-});
-    }
-     await cartItem.deleteMany({ cartId: cart._id });
-    res.json({
-        message:"Order items created successfully",
-        
+    const cart = await Cart.findOne({
+      userId: req.user.id
     });
 
+    if (!cart) {
+      return res.status(404).json({
+        message: "Cart not found"
+      });
+    }
 
+    const cartItems = await cartItem
+      .find({
+        cartId: cart._id
+      })
+      .populate("productId");
+
+    if (cartItems.length === 0) {
+      return res.status(400).json({
+        message: "Cart is empty"
+      });
+    }
+
+    const order = await Order.findOne({
+      _id: orderId,
+      userId: req.user.id
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found"
+      });
+    }
+
+    for (const item of cartItems) {
+
+      await orderItem.create({
+        orderId: order._id,
+        productId: item.productId._id,
+        quantity: item.quantity,
+        price: item.price
+      });
+
+    }
+
+    await cartItem.deleteMany({
+      cartId: cart._id
+    });
+
+    res.status(200).json({
+      message: "Order items created successfully"
+    });
 
   } catch (err) {
-    res.status(500).send(err.message);
-}
-}
+
+    res.status(500).json({
+      message: err.message
+    });
+
+  }
+};
 
 
 const getOrder = async (req, res) => {
@@ -63,11 +88,11 @@ try {
 const getMyOrders = async (req, res) => {
     try {
 
-        const orders = await Order.find({
+        const orders = await order.find({
             userId: req.user.id
         });
 
-        res.status(200).json(orders);
+        res.status(200).json({orders,message : "data"});
 
     } catch (err) {
         res.status(500).json({

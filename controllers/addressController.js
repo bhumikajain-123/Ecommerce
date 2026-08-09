@@ -11,9 +11,10 @@ const addAddress = async (req,res)=>{
 const address = new Address({userId,fullName,phone,addressLine,city,state,pincode,country})
 
 await address.save();
-res.status(200).send("Address added successfully");
+res.status(200).json("Address added successfully");
+
     }catch(err){
-res.status(500).send(err.message);
+res.status(500).json(err.message);
     }
 
 
@@ -38,7 +39,7 @@ const getAddress = async (req, res) => {
         });
     }
 };
-
+//   ----------update address -------------------------
 const updateAddress =async (req,res)=>{
 
     try{
@@ -50,7 +51,7 @@ const updateAddress =async (req,res)=>{
     }
   
 }
-
+//  ----------------------------delete address -------------------------
 const deleteAddress = async (req,res)=>{
 
     try{
@@ -62,4 +63,35 @@ const deleteAddress = async (req,res)=>{
     
 }
 
-module.exports = {addAddress,getAddress,updateAddress,deleteAddress};
+const getAddressById = async (req, res) => {
+
+  try {
+
+    const { id } = req.params;
+
+    const address = await Address.findById(id);
+
+    if (!address) {
+
+      return res.status(404).json({
+        message: "Address not found"
+      });
+
+    }
+
+    res.status(200).json({
+      message: "Address found",
+      address: address
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: "Error getting address",
+      error: error.message
+    });
+
+  }
+
+};
+module.exports = {addAddress,getAddress,updateAddress,deleteAddress,getAddressById};

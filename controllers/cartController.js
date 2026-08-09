@@ -1,10 +1,12 @@
 const Cart = require("../models/Cart");
 
 
+
 const createCart = async (req, res) => {
+    console.log(req.user.id);
     try {
         const cartExist = await Cart.findOne({
-            userId: req.body.userId
+            userId: req.user.id
         });
 
         if (cartExist) {
@@ -13,7 +15,7 @@ const createCart = async (req, res) => {
             });
         }
 
-        const cart = new Cart(req.body);
+        const cart = new Cart({userId : req.user.id});
         await cart.save();
 
         res.status(201).json({
