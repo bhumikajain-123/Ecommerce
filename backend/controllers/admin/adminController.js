@@ -43,4 +43,6 @@ const token = jwt.sign(
 }
 }
 
+
+
 module.exports = {adminLogin};

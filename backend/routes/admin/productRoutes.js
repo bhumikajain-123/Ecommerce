@@ -9,6 +9,7 @@ router.get("/:id",adminMiddleware,getIdProduct);
 router.put("/:id",adminMiddleware,updateProduct);
 router.delete("/:id",adminMiddleware,deleteProduct);
 
+//---------------------------  some bug in that route ----------------------------
 
 router.get("/category/:id",adminMiddleware,getProductCategory);
 module.exports = router;

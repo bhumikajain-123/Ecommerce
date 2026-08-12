@@ -12,9 +12,9 @@ const addCategory = async (req,res) =>{
     await category.save();
     
 
-    res.send("cateogory added");
+    res.json("cateogory added");
 }catch(err){
-    res.status(500).send(err.message);
+    res.status(500).json(err.message);
 }
 }
 
@@ -27,7 +27,7 @@ const getCategory = async (req,res) =>{
         const category = await Category.find();
         res.json(category);
     }catch(err){
-        res.status(500).send(err.message);
+        res.status(500).json(err.message);
     }
 }
 //  --------------------get category by id --------------------
@@ -85,7 +85,12 @@ const updateCategory = async (req,res) =>{
 const deleteCategory = async (req,res) =>{
       try {
         const id = req.params.id;
-
+   const product = await Product.find({category : id})
+   if (products.length > 0) {
+    return res.status(400).json({
+        message: "Cannot delete category because products are using it"
+    });
+}
         const category = await Category.findByIdAndDelete(id);
 
         if (!category) {

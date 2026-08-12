@@ -23,6 +23,17 @@ import MyOrders from "./pages/MyOrder";
 // admin-----
 import Dashboard from "./pages/admin/Dashboard"
 import AdminLogin from "./pages/admin/Login";
+import AdminLayout from "./pages/admin/AdminLayout";
+import User from "./pages/admin/User";
+import Userview from "./pages/admin/Userview";
+import Useredit from "./pages/admin/Useredit";
+import Category from "./pages/admin/category/Category";
+import AdminTable from "./components/admin/DataTable";
+import CategoryAdd from "./pages/admin/category/add"
+import CategoryEdit from "./pages/admin/category/Edit";
+import Product from "./pages/admin/product/Product";
+import ProductEdit from "./pages/admin/product/Edit";
+import ProductAdd from "./pages/admin/product/add";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -47,7 +58,9 @@ function App() {
           <Route path="/address/edit/:id" element={<EditAddress />}/>
           <Route path="/address/edit/:id" element = {<AddressEdit/>}/>
           <Route path="/order/checkout" element = {<Ordercheckout/>}/>
+          <Route path="/admin/table" element = {<AdminTable/>}/>
 <Route path="/order/summary" element = {<OrderSummary/>}/>
+
 
 
 <Route
@@ -64,7 +77,88 @@ function App() {
 {/* admin */}
 
 <Route path = "/admin/login" element = {<AdminLogin/>}/>
-<Route path = "/admin/dashboard" element = {<Dashboard/>}/>
+<Route path = "/admin/users" element = {<User/>}/>
+
+
+   <Route
+                    path="/admin/dashboard"
+                    element={
+                        <AdminLayout>
+                            <Dashboard />
+                        </AdminLayout>
+                    }
+                />
+
+
+                <Route
+    path="/admin/user/view/:id"
+    element={
+        <AdminLayout>
+            <Userview />
+        </AdminLayout>
+    }
+/>
+
+  <Route
+    path="/admin/user/edit/:id"
+    element={
+        <AdminLayout>
+            <Useredit />
+        </AdminLayout>
+    }
+/>
+ <Route
+    path="/admin/categories"
+    element={
+        <AdminLayout>
+            <Category />
+        </AdminLayout>
+    }
+/>
+
+ <Route
+    path="/admin/category/add"
+    element={
+        <AdminLayout>
+            <CategoryAdd/>
+        </AdminLayout>
+    }
+/>
+
+ <Route
+    path="/admin/category/edit/:id"
+    element={
+        <AdminLayout>
+            <CategoryEdit/>
+        </AdminLayout>
+    }
+/>
+ <Route
+    path="/admin/products"
+    element={
+        <AdminLayout>
+            <Product/>
+        </AdminLayout>
+    }
+/>
+
+ <Route
+    path="/admin/product/add"
+    element={
+        <AdminLayout>
+            <ProductAdd/>
+        </AdminLayout>
+    }
+/>
+ <Route
+    path="/admin/product/edit/:id"
+    element={
+        <AdminLayout>
+            <ProductEdit/>
+        </AdminLayout>
+    }
+/>
+
       </Routes>
     </BrowserRouter>
   );

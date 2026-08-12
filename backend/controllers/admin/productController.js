@@ -1,4 +1,5 @@
 const Product = require("../../models/Product");
+const Category = require("../../models/Category");
 
 //--------------filter product by category id -----------------
 
@@ -12,33 +13,38 @@ const getProductCategory = async (req,res) =>{
         }
            const products = await Product.find({
             category: category._id
-        });
+        }).populate("category");
         res.json({message : "category data",
             products
         });
     }catch(err){
-        res.send(err.message);
+        res.json(err.message);
     }
 }
 
 
 //   ----------------add product ---------------------------
-const addProduct = async (req,res) =>{
-    try{
-    const product = new Product({
-        name : req.body.name,
-        description : req.body.description,
-    
+const addProduct = async (req, res) => {
+    try {
+        const { category, name, description, price, stock, image } = req.body;
 
-    });
-    await product.save();
-    
+        const product = new Product({
+            category,
+            name,
+            description,
+            price,
+            stock,
+            image
+        });
 
-    res.send("cateogory added");
-}catch(err){
-    res.status(500).send(err.message);
-}
-}
+        await product.save();
+
+        res.json({ message: "Product added successfully" });
+
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
 
 //  ---------------get all product data --------------------
 
@@ -46,10 +52,10 @@ const getProduct = async (req,res) =>{
 
      try{
 
-        const product = await Product.find();
+        const product = await Product.find().populate("category");
         res.json(product);
     }catch(err){
-        res.status(500).send(err.message);
+        res.status(500).json(err.message);
     }
 }
 //  --------------------get product by id --------------------
@@ -62,7 +68,7 @@ const getIdProduct = async (req,res) =>{
     res.json(product);
 
 }catch(err){
-    res.status(500).send(err.message);
+    res.status(500).json(err.message);
 }
    
 }
@@ -87,7 +93,7 @@ const updateProduct = async (req,res) =>{
         );
 
         if (!product) {
-            return res.status(404).send("Product not found");
+            return res.status(404).json("Product not found");
         }
 
         res.status(200).json({
@@ -111,7 +117,7 @@ const deleteProduct = async (req,res) =>{
         const product = await Product.findByIdAndDelete(id);
 
         if (!product) {
-            return res.status(404).send("Product not found");
+            return res.status(404).json("Product not found");
         }
 
         res.status(200).json({
