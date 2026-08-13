@@ -1,6 +1,6 @@
 
 const User = require("../../models/User");
-
+const Order = require("../../models/Order");
 // ---------------- ADD USER ----------------
 
 const addUser = async (req, res) => {
@@ -135,6 +135,14 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
         const id = req.params.id;
+        
+     const order = await Order.findOne({ userId: id });
+         if (order) {
+            return res.status(400).json({
+                success: false,
+                message: "Sorry, this user cannot be deleted because they have an order."
+            });
+        }
 
         const user = await User.findOneAndDelete({
             _id: id,

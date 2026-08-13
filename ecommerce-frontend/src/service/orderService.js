@@ -121,10 +121,10 @@ const getOrderByIdAdmin = async (id) => {
 
 
 // Update order
-const updateOrder = async (id, formData) => {
+const updateOrder = async (id, status) => {
 
     const response = await fetch(
-        `http://localhost:5000/admin/order/${id}`,
+        `http://localhost:5000/admin/order/${id}/status`,
         {
             method: "PUT",
 
@@ -133,7 +133,7 @@ const updateOrder = async (id, formData) => {
                 "Content-Type": "application/json"
             },
 
-            body: JSON.stringify(formData)
+            body: JSON.stringify({status:status})
         }
     );
 
@@ -159,6 +159,26 @@ const deleteOrder = async (id) => {
     return await response.json();
 };
 
+// ----------------get product ----------------------------
+
+const getProduct = async (id) => {
+
+    const response = await fetch(
+        `http://localhost:5000/admin/order/orderItem/${id}`,
+        {
+            method: "GET",
+
+            headers: {
+                Authorization: `Bearer ${admintoken}`,
+                "Content-Type": "application/json"
+            }
+        }
+    );
+
+    return await response.json();
+};
+
+
   
 
 export default {
@@ -167,5 +187,5 @@ export default {
     getOrdersAdmin,
     getOrderByIdAdmin,
     updateOrder,
-    deleteOrder
+    deleteOrder,getProduct
 };

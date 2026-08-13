@@ -34,6 +34,8 @@ import CategoryEdit from "./pages/admin/category/Edit";
 import Product from "./pages/admin/product/Product";
 import ProductEdit from "./pages/admin/product/Edit";
 import ProductAdd from "./pages/admin/product/add";
+import AdminOrder from "./pages/admin/order/Order";
+import OrderView from "./pages/admin/order/View"
 
 function App() {
   const token = localStorage.getItem("token");
@@ -155,6 +157,23 @@ function App() {
     element={
         <AdminLayout>
             <ProductEdit/>
+        </AdminLayout>
+    }
+/>
+
+ <Route
+    path="/admin/orders"
+    element={
+        <AdminLayout>
+            <AdminOrder/>
+        </AdminLayout>
+    }
+/>
+ <Route
+    path="/admin/order/view/:id"
+    element={
+        <AdminLayout>
+            <OrderView/>
         </AdminLayout>
     }
 />

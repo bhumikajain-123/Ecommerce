@@ -1,0 +1,319 @@
+.order-container {
+    min-height: 100vh;
+    background: #f5f6fa;
+    padding: 30px;
+}
+
+
+/* HEADER */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.page-header h1 {
+    margin: 10px 0 5px;
+    font-size: 30px;
+    color: #222;
+}
+
+.page-header p {
+    margin: 0;
+    color: #777;
+    font-size: 14px;
+}
+
+.back-button {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    color: #555;
+    font-size: 14px;
+}
+
+.back-button:hover {
+    color: #000;
+}
+
+
+/* STATUS */
+
+.status-section {
+    
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.status-section label {
+    display: block;
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 7px;
+}
+
+.status-select {
+    min-width: 150px;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+
+/* SUMMARY */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.summary-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.summary-card span {
+    display: block;
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.summary-card strong {
+    font-size: 18px;
+    color: #222;
+}
+
+
+/* STATUS COLORS */
+
+.status-text.pending {
+    color: #d97706;
+}
+
+.status-text.confirmed {
+    color: #2563eb;
+}
+
+.status-text.shipped {
+    color: #4f46e5;
+}
+
+.status-text.delivered {
+    color: #059669;
+}
+
+.status-text.cancelled {
+    color: #dc2626;
+}
+
+
+/* CARD */
+
+.content-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.content-card h2 {
+    margin: 0 0 20px;
+    font-size: 19px;
+    color: #222;
+}
+
+
+/* CUSTOMER */
+
+.customer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.customer-grid span {
+    display: block;
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.customer-grid strong {
+    color: #333;
+}
+
+
+/* ADDRESS */
+
+.address-box {
+    border-left: 4px solid #222;
+    padding-left: 15px;
+}
+
+.address-box strong {
+    font-size: 16px;
+}
+
+.address-box p {
+    margin: 7px 0;
+    color: #666;
+}
+
+
+/* PRODUCTS HEADER */
+
+.products-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.products-header span {
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* PRODUCT */
+
+.product-list {
+    border-top: 1px solid #eee;
+}
+
+.product-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.product-image img,
+.no-image {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+}
+
+.product-image img {
+    object-fit: cover;
+}
+
+.no-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f1f1f1;
+    color: #888;
+    font-size: 11px;
+}
+
+.product-details {
+    flex: 1;
+}
+
+.product-details h3 {
+    margin: 0 0 7px;
+    font-size: 16px;
+}
+
+.product-details p {
+    margin: 4px 0;
+    color: #777;
+    font-size: 13px;
+}
+
+.product-total {
+    font-weight: 600;
+    font-size: 17px;
+}
+
+
+/* TOTAL */
+
+.total-section {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 40px;
+    padding-top: 22px;
+    font-size: 18px;
+}
+
+.total-section strong {
+    font-size: 22px;
+}
+
+
+/* EMPTY */
+
+.no-products {
+    color: #888;
+    text-align: center;
+    padding: 25px;
+}
+
+
+/* LOADING */
+
+.loading {
+    min-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+    .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .customer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header {
+        align-items: flex-start;
+        gap: 20px;
+        flex-direction: column;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .order-container {
+        padding: 15px;
+    }
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-item {
+        align-items: flex-start;
+    }
+
+    .product-total {
+        margin-left: auto;
+    }
+
+}
