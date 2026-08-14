@@ -45,12 +45,25 @@ const getCartItem = async (req, res) => {
 //   -------------------------place order -------------------------------------------
 
 
-const placeOrder = async (req,res) =>{
+const placeOrder = async (req, res) => {
     try {
+
         const userId = req.user.id;
-      const addressId = req.params.id;
+        const addressId = req.params.id;
+
+        // Get payment method from frontend
+        const { paymentMethod } = req.body;
+
+        // Check payment method
+        if (!paymentMethod) {
+            return res.status(400).json({
+                message: "Payment method is required"
+            });
+        }
+
+        // Find user's cart
         const userCart = await cart.findOne({
-            userId: req.user.id
+            userId: userId
         });
 
         if (!userCart) {
@@ -59,44 +72,60 @@ const placeOrder = async (req,res) =>{
             });
         }
 
+        // Find cart items
         const items = await cartItem.find({
             cartId: userCart._id
         });
 
+        if (items.length === 0) {
+            return res.status(400).json({
+                message: "Cart is empty"
+            });
+        }
+
+        // Calculate total
         const totalAmount = items.reduce(
             (total, current) =>
                 total + current.price * current.quantity,
             0
         );
 
-           const Address = await address.findOne({
-      _id: addressId,
-      userId: userId
-    });
+        // Find address
+        const Address = await address.findOne({
+            _id: addressId,
+            userId: userId
+        });
 
-     if (!Address) {
-      return res.status(404).json({
-        message: "Address not found"
-      });
-    }
+        if (!Address) {
+            return res.status(404).json({
+                message: "Address not found"
+            });
+        }
 
-const placeItem = new order({userId,addressId : Address._id,totalAmount});
+        // Create order
+        const placeItem = new order({
+            userId: userId,
+            addressId: Address._id,
+            totalAmount: totalAmount,
+            paymentMethod: paymentMethod,
+            paymentStatus: "Pending"
+        });
 
-await placeItem.save();
-
+        await placeItem.save();
 
         res.status(200).json({
-           message : "successfully stored",
-           placeItem
+            message: "Successfully stored",
+            placeItem
         });
 
     } catch (err) {
+
         res.status(500).json({
             message: err.message
         });
-    }
-}
 
+    }
+};
 
 
 module.exports = {getCartItem,placeOrder};

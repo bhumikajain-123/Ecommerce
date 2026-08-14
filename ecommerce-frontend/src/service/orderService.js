@@ -1,191 +1,86 @@
-const token = localStorage.getItem("token");
-const admintoken = localStorage.getItem("adminToken");
-const placeOrder = async (addressId) => {
+import { api } from "./api";
 
-  const response = await fetch(
-    `http://localhost:5000/order/${addressId}`,
-    {
-      method: "POST",
+// ================= USER SIDE =================
 
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
-  const data = await response.json();
-
-  return data;
+// Place order
+const placeOrder = (addressId, paymentMethod) => {
+  return api(`/order/${addressId}`, {
+    method: "POST",
+    body: JSON.stringify({
+      paymentMethod,
+    }),
+  });
 };
 
-
-
-const createOrderItems = async (orderId) => {
-
-  const response = await fetch(
-    `http://localhost:5000/orderItem/${orderId}`,
-    {
-      method: "POST",
-
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
-  const data = await response.json();
-
-  return data;
+// Create order items
+const createOrderItems = (orderId) => {
+  return api(`/orderItem/${orderId}`, {
+    method: "POST",
+  });
 };
 
-const getOrder = async (orderId) => {
-
-  const response = await fetch(
-    `http://localhost:5000/orderItem/${orderId}`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
-  const data = await response.json();
-
-  return data;
+// Get order
+const getOrder = (orderId) => {
+  return api(`/orderItem/${orderId}`);
 };
 
-
-
-
-const getMyOrders = async () => {
-
-  const response = await fetch(
-    "http://localhost:5000/order/my-orders",
-    {
-      method: "GET",
-
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-  );
-
-  const data = await response.json();
-
-  return data;
+// Get my orders
+const getMyOrders = () => {
+  return api("/order/my-orders");
 };
-
-
 
 
 // ================= ADMIN SIDE =================
 
-
 // Get all orders
-const getOrdersAdmin = async () => {
-
-    const response = await fetch(
-        `http://localhost:5000/admin/order`,
-        {
-            method: "GET",
-
-            headers: {
-                Authorization: `Bearer ${admintoken}`,
-                "Content-Type": "application/json"
-            }
-        }
-    );
-
-    return await response.json();
+const getOrdersAdmin = () => {
+  return api("/admin/order", {
+    admin: true,
+  });
 };
-
 
 // Get order by ID
-const getOrderByIdAdmin = async (id) => {
-
-    const response = await fetch(
-        `http://localhost:5000/admin/order/${id}`,
-        {
-            method: "GET",
-
-            headers: {
-                Authorization: `Bearer ${admintoken}`,
-                "Content-Type": "application/json"
-            }
-        }
-    );
-
-    return await response.json();
+const getOrderByIdAdmin = (id) => {
+  return api(`/admin/order/${id}`, {
+    admin: true,
+  });
 };
 
-
-// Update order
-const updateOrder = async (id, status) => {
-
-    const response = await fetch(
-        `http://localhost:5000/admin/order/${id}/status`,
-        {
-            method: "PUT",
-
-            headers: {
-                Authorization: `Bearer ${admintoken}`,
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({status:status})
-        }
-    );
-
-    return await response.json();
+// Update order status
+const updateOrder = (id, status) => {
+  return api(`/admin/order/${id}/status`, {
+    method: "PUT",
+    admin: true,
+    body: JSON.stringify({
+      status,
+    }),
+  });
 };
-
 
 // Delete order
-const deleteOrder = async (id) => {
-
-    const response = await fetch(
-        `http://localhost:5000/admin/order/${id}`,
-        {
-            method: "DELETE",
-
-            headers: {
-                Authorization: `Bearer ${admintoken}`,
-                "Content-Type": "application/json"
-            }
-        }
-    );
-
-    return await response.json();
+const deleteOrder = (id) => {
+  return api(`/admin/order/${id}`, {
+    method: "DELETE",
+    admin: true,
+  });
 };
 
-// ----------------get product ----------------------------
-
-const getProduct = async (id) => {
-
-    const response = await fetch(
-        `http://localhost:5000/admin/order/orderItem/${id}`,
-        {
-            method: "GET",
-
-            headers: {
-                Authorization: `Bearer ${admintoken}`,
-                "Content-Type": "application/json"
-            }
-        }
-    );
-
-    return await response.json();
+// Get product/order item
+const getProduct = (id) => {
+  return api(`/admin/order/orderItem/${id}`, {
+    admin: true,
+  });
 };
 
-
-  
 
 export default {
-  placeOrder,createOrderItems,getOrder,getMyOrders,
-
-    getOrdersAdmin,
-    getOrderByIdAdmin,
-    updateOrder,
-    deleteOrder,getProduct
+  placeOrder,
+  createOrderItems,
+  getOrder,
+  getMyOrders,
+  getOrdersAdmin,
+  getOrderByIdAdmin,
+  updateOrder,
+  deleteOrder,
+  getProduct,
 };

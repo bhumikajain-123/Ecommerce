@@ -1,62 +1,34 @@
- const token = localStorage.getItem("token");
-const addAddress = async (formdata)=>{
+import { api } from "./api";
 
-    const response = await fetch("http://localhost:5000/address",{
-
-        method : "POST",
-       headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-            body: JSON.stringify(formdata)
-        
-    });
-return await response.json();
-}
-
-const getAddress = async()=>{
-
-    const response =  await fetch("http://localhost:5000/address",{
-
-        method : "GET",
-       headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-           
-        
-    });
-return await response.json();
-}
-const updateAddress = async (id, formData) => {
-  const token = localStorage.getItem("token");
-
-  const response = await fetch(`http://localhost:5000/address/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
+// Add address
+const addAddress = (formData) => {
+  return api("/address", {
+    method: "POST",
     body: JSON.stringify(formData),
   });
-
-  return await response.json();
 };
 
+// Get all addresses
+const getAddress = () => {
+  return api("/address");
+};
 
-const getAddressById = async (id) =>{
- const token = localStorage.getItem("token");
-
-  const response = await fetch(`http://localhost:5000/address/${id}`, {
+// Update address
+const updateAddress = (id, formData) => {
+  return api(`/address/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-   
+    body: JSON.stringify(formData),
   });
-
-  return await response.json();
 };
 
-export default { addAddress,getAddress,updateAddress,getAddressById };
+// Get address by ID
+const getAddressById = (id) => {
+  return api(`/address/${id}`);
+};
+
+export default {
+  addAddress,
+  getAddress,
+  updateAddress,
+  getAddressById,
+};

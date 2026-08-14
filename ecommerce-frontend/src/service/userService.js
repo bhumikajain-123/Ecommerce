@@ -1,75 +1,29 @@
-const getUsers = async () => {
+import { api } from "./api";
 
-    const token = localStorage.getItem("adminToken");
-
-    const response = await fetch("http://localhost:5000/admin/user", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        }
-    });
-
-    return await response.json();
-};
-const getUserById = async (id) => {
-
-    const token = localStorage.getItem("adminToken");
-
-    const response = await fetch(`http://localhost:5000/admin/user/${id}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        }
-    });
-
-    return await response.json();
+const getUsers = () => {
+  return api("/admin/user");
 };
 
+const getUserById = (id) => {
+  return api(`/admin/user/${id}`);
+};
 
+const deleteUser = (id) => {
+  return api(`/admin/user/${id}`, {
+    method: "DELETE",
+  });
+};
 
-
-const deleteUser = async (id) =>{
-
-      const token = localStorage.getItem("adminToken");
-
-    const response = await fetch(`http://localhost:5000/admin/user/${id}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        }
-    });
-
-    return await response.json();
-
-}
-
-
-
-const editUser = async (id, formData) => {
-
-    const token = localStorage.getItem("adminToken");
-
-    const response = await fetch(
-        `http://localhost:5000/admin/user/${id}`,
-        {
-            method: "PUT",
-
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-
-            body: JSON.stringify(formData)
-        }
-    );
-
-    return await response.json();
+const editUser = (id, formData) => {
+  return api(`/admin/user/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(formData),
+  });
 };
 
 export default {
-    getUsers,getUserById,deleteUser,editUser
+  getUsers,
+  getUserById,
+  deleteUser,
+  editUser,
 };
-

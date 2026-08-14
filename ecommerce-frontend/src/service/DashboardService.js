@@ -1,19 +1,11 @@
-const dashboard = async () => {
+import { api } from "./api";
 
-    const admintoken = localStorage.getItem("adminToken");
-
-    const response = await fetch("http://localhost:5000/admin/dashboard", {
-        method: "GET",
-
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${admintoken}`
-        }
-    });
-
-   return  await response.json();
-
-   
+const dashboard = () => {
+  return api("/admin/dashboard", {
+    admin: true,
+  });
 };
 
-export default {dashboard};
+export default {
+  dashboard,
+};

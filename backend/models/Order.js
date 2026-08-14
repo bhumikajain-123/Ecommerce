@@ -25,9 +25,19 @@ const orderSchema = new mongoose.Schema({
         "Cancelled"
     ],
     default: "Pending"
-}
+},
 
-   
+paymentMethod : {
+    type : String,
+    enum : ["COD","ONLINE"],
+    required : true
+},
+
+   paymethodStatus : {
+    type : String,
+    enum : ["Pending","Paid","Failed"],
+    default : "Pending"
+   }
   
 },{ timestamps: true });
 

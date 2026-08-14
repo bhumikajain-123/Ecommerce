@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import categoryService from "../../../service/categoryService";
 import productService from "../../../service/productService";
 import { useNavigate } from "react-router-dom";
-import "./add.css";
 
 function Add() {
-
     const navigate = useNavigate();
 
     const [categoryData, setCategoryData] = useState([]);
@@ -21,34 +19,22 @@ function Add() {
 
     const [errors, setErrors] = useState({});
 
-
     // Get categories
     useEffect(() => {
-
         const category = async () => {
-
             try {
-
                 const data = await categoryService.getCategory();
-
                 setCategoryData(data);
-
             } catch (err) {
-
                 console.log(err);
-
             }
-
         };
 
         category();
-
     }, []);
-
 
     // Handle input
     const handleChange = (e) => {
-
         setProductData({
             ...productdata,
             [e.target.name]: e.target.value
@@ -58,13 +44,10 @@ function Add() {
             ...errors,
             [e.target.name]: ""
         });
-
     };
-
 
     // Validation
     const validateForm = () => {
-
         const newErrors = {};
 
         if (!productdata.name.trim()) {
@@ -100,10 +83,8 @@ function Add() {
         return Object.keys(newErrors).length === 0;
     };
 
-
     // Submit
     const handleSubmit = async (e) => {
-
         e.preventDefault();
 
         const isValid = validateForm();
@@ -113,7 +94,6 @@ function Add() {
         }
 
         try {
-
             console.log("Product data:", productdata);
 
             const data = await productService.addProduct(productdata);
@@ -121,231 +101,227 @@ function Add() {
             alert(data.message);
 
             navigate("/admin/products");
-
         } catch (err) {
-
             console.log(err);
-
             alert("Failed to add product");
-
         }
-
     };
 
-
     return (
+        <div className="container py-5">
 
-        <div className="product-page">
+            <div className="card shadow-sm mx-auto" style={{ maxWidth: "750px" }}>
 
-            <div className="product-card">
+                {/* Header */}
+                <div className="card-header bg-white py-4">
+                    <h2 className="mb-1">Add Product</h2>
 
-                <div className="product-header">
-
-                    <h1>Add Product</h1>
-
-                    <p>
+                    <p className="text-muted mb-0">
                         Add a new product to your store
                     </p>
-
                 </div>
 
+                {/* Form */}
+                <div className="card-body p-4">
 
-                <form
-                    className="product-form"
-                    onSubmit={handleSubmit}
-                >
+                    <form onSubmit={handleSubmit}>
 
-                    {/* Product Name */}
+                        {/* Product Name */}
+                        <div className="mb-3">
+                            <label className="form-label fw-semibold">
+                                Product Name
+                            </label>
 
-                    <div className="form-group">
+                            <input
+                                type="text"
+                                name="name"
+                                className={`form-control ${
+                                    errors.name ? "is-invalid" : ""
+                                }`}
+                                placeholder="Enter product name"
+                                value={productdata.name}
+                                onChange={handleChange}
+                            />
 
-                        <label>Product Name</label>
+                            {errors.name && (
+                                <div className="invalid-feedback">
+                                    {errors.name}
+                                </div>
+                            )}
+                        </div>
 
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Enter product name"
-                            value={productdata.name}
-                            onChange={handleChange}
-                        />
+                        {/* Category */}
+                        <div className="mb-3">
+                            <label className="form-label fw-semibold">
+                                Category
+                            </label>
 
-                        {errors.name && (
-                            <p className="error">
-                                {errors.name}
-                            </p>
-                        )}
-
-                    </div>
-
-
-                    {/* Category */}
-
-                    <div className="form-group">
-
-                        <label>Category</label>
-
-                        <select
-                            name="category"
-                            value={productdata.category}
-                            onChange={handleChange}
-                        >
-
-                            <option value="">
-                                Select Category
-                            </option>
-
-                            {categoryData.map((item) => (
-
-                                <option
-                                    key={item._id}
-                                    value={item._id}
-                                >
-                                    {item.name}
+                            <select
+                                name="category"
+                                className={`form-select ${
+                                    errors.category ? "is-invalid" : ""
+                                }`}
+                                value={productdata.category}
+                                onChange={handleChange}
+                            >
+                                <option value="">
+                                    Select Category
                                 </option>
 
-                            ))}
+                                {categoryData.map((item) => (
+                                    <option
+                                        key={item._id}
+                                        value={item._id}
+                                    >
+                                        {item.name}
+                                    </option>
+                                ))}
+                            </select>
 
-                        </select>
+                            {errors.category && (
+                                <div className="invalid-feedback">
+                                    {errors.category}
+                                </div>
+                            )}
+                        </div>
 
-                        {errors.category && (
-                            <p className="error">
-                                {errors.category}
-                            </p>
-                        )}
+                        {/* Description */}
+                        <div className="mb-3">
+                            <label className="form-label fw-semibold">
+                                Description
+                            </label>
 
-                    </div>
-
-
-                    {/* Description */}
-
-                    <div className="form-group">
-
-                        <label>Description</label>
-
-                        <textarea
-                            name="description"
-                            placeholder="Enter product description"
-                            value={productdata.description}
-                            onChange={handleChange}
-                            rows="4"
-                        />
-
-                        {errors.description && (
-                            <p className="error">
-                                {errors.description}
-                            </p>
-                        )}
-
-                    </div>
-
-
-                    {/* Price + Stock */}
-
-                    <div className="form-row">
-
-                        <div className="form-group">
-
-                            <label>Price</label>
-
-                            <input
-                                type="number"
-                                name="price"
-                                placeholder="Enter price"
-                                value={productdata.price}
+                            <textarea
+                                name="description"
+                                className={`form-control ${
+                                    errors.description ? "is-invalid" : ""
+                                }`}
+                                placeholder="Enter product description"
+                                value={productdata.description}
                                 onChange={handleChange}
+                                rows="4"
                             />
 
-                            {errors.price && (
-                                <p className="error">
-                                    {errors.price}
-                                </p>
+                            {errors.description && (
+                                <div className="invalid-feedback">
+                                    {errors.description}
+                                </div>
                             )}
+                        </div>
+
+                        {/* Price + Stock */}
+                        <div className="row">
+
+                            <div className="col-md-6 mb-3">
+                                <label className="form-label fw-semibold">
+                                    Price
+                                </label>
+
+                                <input
+                                    type="number"
+                                    name="price"
+                                    className={`form-control ${
+                                        errors.price ? "is-invalid" : ""
+                                    }`}
+                                    placeholder="Enter price"
+                                    value={productdata.price}
+                                    onChange={handleChange}
+                                />
+
+                                {errors.price && (
+                                    <div className="invalid-feedback">
+                                        {errors.price}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="col-md-6 mb-3">
+                                <label className="form-label fw-semibold">
+                                    Stock
+                                </label>
+
+                                <input
+                                    type="number"
+                                    name="stock"
+                                    className={`form-control ${
+                                        errors.stock ? "is-invalid" : ""
+                                    }`}
+                                    placeholder="Enter stock"
+                                    value={productdata.stock}
+                                    onChange={handleChange}
+                                />
+
+                                {errors.stock && (
+                                    <div className="invalid-feedback">
+                                        {errors.stock}
+                                    </div>
+                                )}
+                            </div>
 
                         </div>
 
-
-                        <div className="form-group">
-
-                            <label>Stock</label>
+                        {/* Image */}
+                        <div className="mb-4">
+                            <label className="form-label fw-semibold">
+                                Image URL
+                            </label>
 
                             <input
-                                type="number"
-                                name="stock"
-                                placeholder="Enter stock"
-                                value={productdata.stock}
+                                type="text"
+                                name="image"
+                                className={`form-control ${
+                                    errors.image ? "is-invalid" : ""
+                                }`}
+                                placeholder="Enter image URL"
+                                value={productdata.image}
                                 onChange={handleChange}
                             />
 
-                            {errors.stock && (
-                                <p className="error">
-                                    {errors.stock}
-                                </p>
+                            {errors.image && (
+                                <div className="invalid-feedback">
+                                    {errors.image}
+                                </div>
                             )}
+                        </div>
+
+                        {/* Buttons */}
+                        <div className="d-flex justify-content-end gap-2 border-top pt-3">
+
+                            <button
+                                type="button"
+                                className="btn btn-outline-secondary"
+                                onClick={() =>
+                                    navigate("/admin/products")
+                                }
+                            >
+                                ← Back
+                            </button>
+
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                onClick={() =>
+                                    navigate("/admin/products")
+                                }
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
+                            >
+                                Add Product
+                            </button>
 
                         </div>
 
-                    </div>
+                    </form>
 
-
-                    {/* Image */}
-
-                    <div className="form-group">
-
-                        <label>Image URL</label>
-
-                        <input
-                            type="text"
-                            name="image"
-                            placeholder="Enter image URL"
-                            value={productdata.image}
-                            onChange={handleChange}
-                        />
-
-                        {errors.image && (
-                            <p className="error">
-                                {errors.image}
-                            </p>
-                        )}
-
-                    </div>
-
-
-                    {/* Buttons */}
-
-                    <div className="button-group">
-                        <button
-    type="button"
-    className="back-btn"
-    onClick={() => navigate("/admin/products")}
->
-    ← Back
-</button>
-
-                        <button
-                            type="button"
-                            className="cancel-btn"
-                            onClick={() => navigate("/admin/products")}
-                        >
-                            Cancel
-                        </button>
-
-                        <button
-                            type="submit"
-                            className="add-btn"
-                        >
-                            Add Product
-                        </button>
-
-                    </div>
-
-                </form>
-
+                </div>
             </div>
-
         </div>
-
     );
-
 }
 
 export default Add;

@@ -1,108 +1,55 @@
-const token = localStorage.getItem("token");
-const admintoken = localStorage.getItem("adminToken");
-const filtercategory = async (id) => {
-    const response = await fetch(
-        `http://localhost:5000/product/category/${id}`,
-        {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
-        }
-    );
+import { api } from "./api";
 
-return  await response.json();
-
-  
+// User side - filter products by category
+const filtercategory = (id) => {
+  return api(`/product/category/${id}`);
 };
 
+// Admin - add category
+const addCategory = (formData) => {
+  return api("/admin/category", {
+    method: "POST",
+    admin: true,
+    body: JSON.stringify(formData),
+  });
+};
 
-//   ---------------------------admin side category -------------------
+// Admin - get all categories
+const getCategory = () => {
+  return api("/admin/category", {
+    admin: true,
+  });
+};
 
+// Admin - get category by ID
+const getCategoryById = (id) => {
+  return api(`/admin/category/${id}`, {
+    admin: true,
+  });
+};
 
+// Admin - update category
+const updateCategory = (id, formData) => {
+  return api(`/admin/category/${id}`, {
+    method: "PUT",
+    admin: true,
+    body: JSON.stringify(formData),
+  });
+};
 
-    const addCategory = async (formData) =>{
-        const response = await fetch(
-        `http://localhost:5000/admin/category`,
-        {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${admintoken}`,
-                "Content-Type": "application/json"
-            },
-            body : JSON.stringify(formData)
-        }
-    );
+// Admin - delete category
+const deleteCategory = (id) => {
+  return api(`/admin/category/${id}`, {
+    method: "DELETE",
+    admin: true,
+  });
+};
 
-return  await response.json();
-
-    }
-
-    const getCategory = async() =>{
-        const response = await fetch(
-        `http://localhost:5000/admin/category`,
-        {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${admintoken}`,
-                "Content-Type": "application/json"
-            }
-        }
-    );
-
-return  await response.json();
-    }
-
-    const getCategoryById = async(id) =>{
-
-
-        const response = await fetch(
-        `http://localhost:5000/admin/category/${id}`,
-        {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${admintoken}`,
-                "Content-Type": "application/json"
-            }
-        }
-    );
-
-return  await response.json();
-    }
-
-    const updateCategory = async (id,formData) => {
-         const response = await fetch(
-        `http://localhost:5000/admin/category/${id}`,
-        {
-            method: "PUT",
-            headers: {
-                Authorization: `Bearer ${admintoken}`,
-                "Content-Type": "application/json"
-            },
-            body : JSON.stringify(formData)
-        }
-    );
-
-   return  await response.json();
-    }
-
-    const deleteCategory = async (id) =>{
-
-         const response = await fetch(
-        `http://localhost:5000/admin/category/${id}`,
-        {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${admintoken}`,
-                "Content-Type": "application/json"
-            },
-            
-        }
-    );
-
-   return  await response.json();
-    }
-    
-
-export default {filtercategory,addCategory,getCategory,getCategoryById,updateCategory,deleteCategory};
+export default {
+  filtercategory,
+  addCategory,
+  getCategory,
+  getCategoryById,
+  updateCategory,
+  deleteCategory,
+};

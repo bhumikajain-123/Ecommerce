@@ -1,15 +1,12 @@
-const setLogin = async (formData) =>{
+import { api } from "./api";
 
-    const response = await fetch("http://localhost:5000/admin/login",{
+const setLogin = (formData) => {
+  return api("/admin/login", {
+    method: "POST",
+    body: JSON.stringify(formData),
+  });
+};
 
-        method : "POST",
-        headers : {
-            "Content-Type" : "application/json"
-        },
-       body : JSON.stringify(formData)
-
-    });
-    return await response.json();
-}
-
-export default  {setLogin};
+export default {
+  setLogin,
+};

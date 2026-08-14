@@ -9,6 +9,7 @@ const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState("COD");
 
   useEffect(() => {
 
@@ -67,18 +68,29 @@ const navigate = useNavigate();
 
 
     // Later:
-    const data = await orderService.placeOrder(
-    selectedAddress._id
+    if(paymentMethod === "COD"){
+
+        const data = await orderService.placeOrder(
+    selectedAddress._id,"COD"
   );
-
-  console.log(data);
-
-  const order  = await orderService.createOrderItems(data.placeItem._id);
+    console.log(data);
+     const order  = await orderService.createOrderItems(data.placeItem._id);
 
   console.log(order);
  navigate(`/order/success/${data.placeItem._id}`);
-  };
+  }
 
+  // if(paymentMethod === "ONLINE0"){
+
+  // }
+    }
+  
+
+
+
+ 
+
+  
 
   return (
 
@@ -329,6 +341,81 @@ const navigate = useNavigate();
                 </h5>
 
               </div>
+
+
+{/* PAYMENT METHOD */}
+
+<div className="mt-4">
+
+  <h5 className="fw-bold">
+    💳 Payment Method
+  </h5>
+
+  <hr />
+
+  {/* Cash on Delivery */}
+  <div
+    className={`border rounded-3 p-3 mb-3
+       ${
+      paymentMethod === "COD"
+        ? "border-primary bg-light"
+        : ""
+    }`}
+  >
+    <div className="form-check">
+
+      <input
+        type="radio"
+        className="form-check-input"
+        name="paymentMethod"
+        checked= {paymentMethod === "COD"}
+        onChange= {() => setPaymentMethod("COD")}
+      />
+
+      <label className="form-check-label fw-bold">
+        💵 Cash on Delivery
+      </label>
+
+    </div>
+
+    <small className="text-secondary ms-4">
+      Pay when your order is delivered
+    </small>
+
+  </div>
+
+
+  {/* Online Payment */}
+  <div
+    className={`border rounded-3 p-3 ${
+      paymentMethod === "ONLINE"
+        ? "border-primary bg-light"
+        : ""
+    }`}
+  >
+    <div className="form-check">
+
+      <input
+        type="radio"
+        className="form-check-input"
+        name="paymentMethod"
+        checked= {paymentMethod === "ONLINE"}
+        onChange= {()=>setPaymentMethod("ONLINE")}
+      />
+
+      <label className="form-check-label fw-bold">
+        💳 Online Payment
+      </label>
+
+    </div>
+
+    <small className="text-secondary ms-4">
+      Pay securely using online payment
+    </small>
+
+  </div>
+
+</div>
 
 
               <button

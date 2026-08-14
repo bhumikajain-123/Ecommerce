@@ -1,61 +1,42 @@
- 
- const token = localStorage.getItem("token");
+import { api } from "./api";
 
-const addToCart = async (productId, price) => {
- 
-
-  const response = await fetch("http://localhost:5000/cartItem", {
+// Add product to cart
+const addToCart = (productId, price) => {
+  return api("/cartItem", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    },
     body: JSON.stringify({
       productId,
       quantity: 1,
-      price
-    })
+      price,
+    }),
   });
-
-  return await response.json();
 };
 
-const getToCart =async()=>{
-  
-  const response = await fetch("http://localhost:5000/cartItem",{
-    method : "GET",
-    headers : {
-     Authorization: `Bearer ${token}`
-    },
+// Get cart
+const getToCart = () => {
+  return api("/cartItem");
+};
+
+// Update quantity
+const updateQuantity = (id, action) => {
+  return api(`/cartItem/quantity/${id}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      action,
+    }),
   });
-  return await response.json();
-}
+};
 
-const updateQuantity = async (id,action)=>{
-  const response = await fetch(`http://localhost:5000/cartItem/quantity/${id}`,{
-
-    method : "PUT",
-    headers : {
-       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-body : JSON.stringify({ action }),
-  }
-);
-return await response.json();
-}
-
-const removeItem = async (id)=>{
-  const response = await  fetch(`http://localhost:5000/cartItem/${id}`,{
-
-method : "DELETE",
- headers : {
-       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-
-
+// Remove item
+const removeItem = (id) => {
+  return api(`/cartItem/${id}`, {
+    method: "DELETE",
   });
-  return await response.json();
-}
-export default { addToCart,getToCart,updateQuantity,removeItem};
+};
+
+export default {
+  addToCart,
+  getToCart,
+  updateQuantity,
+  removeItem,
+};

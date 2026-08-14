@@ -11,13 +11,12 @@ function ProductEdit() {
         name: "",
         description: "",
         price: "",
-        stock: ""
+        stock: "",
+        image: ""
     });
 
     const [loading, setLoading] = useState(true);
 
-
-    // Get product by ID
     useEffect(() => {
 
         const getProduct = async () => {
@@ -27,13 +26,12 @@ function ProductEdit() {
                 const result =
                     await productService.getProductById(id);
 
-                console.log("Product:", result);
-
                 setFormData({
                     name: result.name || "",
                     description: result.description || "",
                     price: result.price || "",
-                    stock: result.stock || ""
+                    stock: result.stock || "",
+                    image: result.image || ""
                 });
 
                 setLoading(false);
@@ -41,11 +39,9 @@ function ProductEdit() {
             } catch (err) {
 
                 console.log(err);
-
                 setLoading(false);
 
             }
-
         };
 
         getProduct();
@@ -53,7 +49,6 @@ function ProductEdit() {
     }, [id]);
 
 
-    // Handle input change
     const handleChange = (e) => {
 
         setFormData({
@@ -64,7 +59,6 @@ function ProductEdit() {
     };
 
 
-    // Update product
     const handleSubmit = async (e) => {
 
         e.preventDefault();
@@ -77,7 +71,7 @@ function ProductEdit() {
                     formData
                 );
 
-            console.log("Updated:", result);
+            console.log(result);
 
             alert("Product updated successfully");
 
@@ -93,17 +87,7 @@ function ProductEdit() {
 
 
     if (loading) {
-
-        return (
-
-            <div className="container-fluid p-4">
-
-                <h4>Loading product...</h4>
-
-            </div>
-
-        );
-
+        return <h4>Loading product...</h4>;
     }
 
 
@@ -111,11 +95,9 @@ function ProductEdit() {
 
         <div className="container-fluid p-4">
 
-            {/* Header */}
-
             <div className="mb-4">
 
-                <h2 className="fw-bold mb-1">
+                <h2 className="fw-bold">
                     Edit Product
                 </h2>
 
@@ -126,18 +108,15 @@ function ProductEdit() {
             </div>
 
 
-            {/* Form */}
-
             <div className="row">
 
-                <div className="col-lg-8 col-md-10">
+                <div className="col-lg-8">
 
                     <div className="card border-0 shadow-sm">
 
                         <div className="card-body p-4">
 
                             <form onSubmit={handleSubmit}>
-
 
                                 {/* Product Name */}
 
@@ -150,10 +129,9 @@ function ProductEdit() {
                                     <input
                                         type="text"
                                         name="name"
-                                        className="form-control form-control-lg"
+                                        className="form-control"
                                         value={formData.name}
                                         onChange={handleChange}
-                                        placeholder="Enter product name"
                                         required
                                     />
 
@@ -171,10 +149,9 @@ function ProductEdit() {
                                     <textarea
                                         name="description"
                                         className="form-control"
-                                        rows="5"
+                                        rows="4"
                                         value={formData.description}
                                         onChange={handleChange}
-                                        placeholder="Enter product description"
                                         required
                                     />
 
@@ -195,7 +172,6 @@ function ProductEdit() {
                                         className="form-control"
                                         value={formData.price}
                                         onChange={handleChange}
-                                        placeholder="Enter product price"
                                         min="0"
                                         required
                                     />
@@ -217,12 +193,59 @@ function ProductEdit() {
                                         className="form-control"
                                         value={formData.stock}
                                         onChange={handleChange}
-                                        placeholder="Enter product stock"
                                         min="0"
                                         required
                                     />
 
                                 </div>
+
+
+                                {/* Image URL */}
+
+                                <div className="mb-4">
+
+                                    <label className="form-label fw-semibold">
+                                        Product Image URL
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        name="image"
+                                        className="form-control"
+                                        value={formData.image}
+                                        onChange={handleChange}
+                                        placeholder="Enter image URL"
+                                        required
+                                    />
+
+                                </div>
+
+
+                                {/* Image Preview */}
+
+                                {formData.image && (
+
+                                    <div className="mb-4">
+
+                                        <label className="form-label fw-semibold d-block">
+                                            Image Preview
+                                        </label>
+
+                                        <img
+                                            src={formData.image}
+                                            alt={formData.name}
+                                            style={{
+                                                width: "150px",
+                                                height: "150px",
+                                                objectFit: "cover",
+                                                borderRadius: "10px",
+                                                border: "1px solid #ddd"
+                                            }}
+                                        />
+
+                                    </div>
+
+                                )}
 
 
                                 {/* Buttons */}
@@ -236,7 +259,6 @@ function ProductEdit() {
                                         Update Product
                                     </button>
 
-
                                     <button
                                         type="button"
                                         className="btn btn-light border px-4"
@@ -248,7 +270,6 @@ function ProductEdit() {
                                     </button>
 
                                 </div>
-
 
                             </form>
 
@@ -263,7 +284,6 @@ function ProductEdit() {
         </div>
 
     );
-
 }
 
 export default ProductEdit;
