@@ -59,32 +59,160 @@ const navigate = useNavigate();
     itemsTotal + shipping + tax;
 
 
-  const handlePlaceOrder =async () => {
+  const handlePlaceOrder = async () => {
 
-    if (!selectedAddress) {
-      alert("Please select a delivery address");
-      return;
+    try {
+
+        if (!selectedAddress) {
+            alert("Please select a delivery address");
+            return;
+        }
+
+
+        // ================= COD =================
+
+        if (paymentMethod === "COD") {
+
+            const data = await orderService.placeOrder(
+                selectedAddress._id,
+                "COD"
+            );
+
+            console.log(data);
+
+            const order =
+                await orderService.createOrderItems(
+                    data.placeItem._id
+                );
+
+            console.log(order);
+
+            navigate(
+                `/order/success/${data.placeItem._id}`
+            );
+        }
+
+
+        // ================= ONLINE =================
+
+        if (paymentMethod === "ONLINE") {
+
+            // 1. Create Razorpay order
+            const data =
+                await orderService.placeOrder(
+                    selectedAddress._id,
+                    "ONLINE"
+                );
+
+            const razorpayOrder =
+                data.razorpayOrder;
+
+
+            // 2. Razorpay options
+            const options = {
+
+                key:
+                    import.meta.env.VITE_RAZORPAY_KEY_ID,
+
+                amount:
+                    razorpayOrder.amount,
+
+                currency:
+                    razorpayOrder.currency,
+
+                name:
+                    "My E-Commerce",
+
+                description:
+                    "Online Payment",
+
+                order_id:
+                    razorpayOrder.id,
+
+
+                // 3. Razorpay calls this AFTER payment
+                handler: async function (response) {
+
+                    console.log(
+                        "Payment ID:",
+                        response.razorpay_payment_id
+                    );
+
+                    console.log(
+                        "Order ID:",
+                        response.razorpay_order_id
+                    );
+
+                    console.log(
+                        "Signature:",
+                        response.razorpay_signature
+                    );
+
+
+                    // 4. Verify payment
+                    const verifyData =
+                        await orderService.verifyPayment({
+
+                            razorpay_payment_id:
+                                response.razorpay_payment_id,
+
+                            razorpay_order_id:
+                                response.razorpay_order_id,
+
+                            razorpay_signature:
+                                response.razorpay_signature
+
+                        });
+
+
+                    console.log(
+                        "Verification:",
+                        verifyData
+                    );
+
+
+                    // 5. Payment verified
+                    if (
+                        verifyData.message ===
+                        "Payment verified successfully"
+                    ) {
+
+                        console.log(
+                            "Payment successful"
+                        );
+
+                        // Now create OrderItems
+                        const order =
+                            await orderService.createOrderItems(
+                                data.order._id
+                            );
+
+                        console.log(order);
+
+
+                        // Success page
+                        navigate(
+                            `/order/success/${data.order._id}`
+                        );
+                    }
+                }
+            };
+
+
+            // 6. Create Razorpay object
+            const razorpay =
+                new window.Razorpay(options);
+
+
+            // 7. Open Razorpay popup
+            razorpay.open();
+        }
+
+    } catch (err) {
+
+        console.log(err);
     }
-
-
-    // Later:
-    if(paymentMethod === "COD"){
-
-        const data = await orderService.placeOrder(
-    selectedAddress._id,"COD"
-  );
-    console.log(data);
-     const order  = await orderService.createOrderItems(data.placeItem._id);
-
-  console.log(order);
- navigate(`/order/success/${data.placeItem._id}`);
-  }
-
-  // if(paymentMethod === "ONLINE0"){
-
-  // }
-    }
-  
+};
 
 
 

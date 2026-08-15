@@ -46,6 +46,29 @@ const getOrderByIdAdmin = (id) => {
   });
 };
 
+
+
+const verifyPayment = async (paymentData) => {
+const token = localStorage.getItem("token");
+    const response = await fetch(
+        "http://localhost:5000/order/verify-payment",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+
+            body: JSON.stringify(paymentData)
+        }
+    );
+
+    const data = await response.json();
+
+    return data;
+};
+
 // Update order status
 const updateOrder = (id, status) => {
   return api(`/admin/order/${id}/status`, {
@@ -82,5 +105,5 @@ export default {
   getOrderByIdAdmin,
   updateOrder,
   deleteOrder,
-  getProduct,
+  getProduct,verifyPayment
 };

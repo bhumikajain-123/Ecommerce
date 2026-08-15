@@ -37,7 +37,14 @@ paymentMethod : {
     type : String,
     enum : ["Pending","Paid","Failed"],
     default : "Pending"
-   }
+   },
+     razorpayOrderId: {
+        type: String
+    },
+
+    razorpayPaymentId: {
+        type: String
+    }
   
 },{ timestamps: true });
 

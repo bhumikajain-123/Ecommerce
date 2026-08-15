@@ -2,7 +2,9 @@ const cart = require("../models/Cart");
 const cartItem = require("../models/cartItem");
 const order = require("../models/Order");
 const address = require("../models/Address");
+const razorpay = require("../config/razorpay");
 
+const crypto = require("crypto");
 
 //   ------------------------getCartItem --------------------------------
 
@@ -61,6 +63,8 @@ const placeOrder = async (req, res) => {
             });
         }
 
+        
+
         // Find user's cart
         const userCart = await cart.findOne({
             userId: userId
@@ -102,13 +106,14 @@ const placeOrder = async (req, res) => {
             });
         }
 
-        // Create order
-        const placeItem = new order({
+        if(paymentMethod === "COD"){
+            // Create order
+              const placeItem = new order({
             userId: userId,
             addressId: Address._id,
             totalAmount: totalAmount,
             paymentMethod: paymentMethod,
-            paymentStatus: "Pending"
+             paymethodStatus: "Pending"
         });
 
         await placeItem.save();
@@ -118,7 +123,48 @@ const placeOrder = async (req, res) => {
             placeItem
         });
 
-    } catch (err) {
+        //  ---------for online -----------------
+
+        }else if(paymentMethod === "ONLINE"){
+
+            const options = {
+                amount : totalAmount * 100,
+                currency : "INR",
+                receipt : `receipt_${Date.now()}`
+            }
+                   const razorpayOrder = await razorpay.orders.create(options);
+
+                     // 2. Create MongoDB order
+    const placeItem = new order({
+
+        userId: userId,
+
+        addressId: Address._id,
+
+        totalAmount: totalAmount,
+
+        paymentMethod: "ONLINE",
+
+        paymethodStatus: "Pending",
+
+        razorpayOrderId: razorpayOrder.id
+    });
+
+
+    // 3. Save MongoDB order
+    await placeItem.save();
+
+    
+
+    res.status(200).json({
+        message: "Razorpay order created",
+          razorpayOrder: razorpayOrder,
+
+        order: placeItem
+    });
+            }
+
+        } catch (err) {
 
         res.status(500).json({
             message: err.message
@@ -128,4 +174,43 @@ const placeOrder = async (req, res) => {
 };
 
 
-module.exports = {getCartItem,placeOrder};
+//  --------------payment verification --------------------------
+const verifyPayment = async (req,res) => {
+
+    try{
+        const { razorpay_order_id,
+            razorpay_payment_id,
+            razorpay_signature} = req.body;
+
+            
+         const body =    razorpay_order_id + "|" + razorpay_payment_id;
+          const hmac = crypto.createHmac(
+            "sha256",
+            process.env.RAZORPAY_KEY_SECRET
+        );
+               hmac.update(body);
+
+                const expectedSignature =
+            hmac.digest("hex");
+
+
+             if (expectedSignature !== razorpay_signature) {
+
+            return res.status(400).json({
+                message: "Payment verification failed"
+            });
+        }
+
+        // Step 7: Payment is verified
+        return res.status(200).json({
+            message: "Payment verified successfully"
+        });
+    
+    }catch(err) {
+          return res.status(500).json({
+            message: err.message
+        });
+    }
+}
+
+module.exports = {getCartItem,placeOrder,verifyPayment};

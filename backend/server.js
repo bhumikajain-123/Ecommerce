@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -47,7 +48,4 @@ app.use("/admin/user",adminUserRoutes);
 app.listen(5000, () => {
     console.log("Server is running at 5000");
 });
-
-
-
 
