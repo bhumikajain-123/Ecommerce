@@ -45,6 +45,9 @@ app.use("/admin/product",adminproductRoutes);
 app.use("/admin/order",adminOrderRoutes);
 app.use("/admin/user",adminUserRoutes);
 
+
+
+
 app.listen(5000, () => {
     console.log("Server is running at 5000");
 });

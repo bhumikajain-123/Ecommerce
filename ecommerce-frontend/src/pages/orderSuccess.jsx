@@ -8,7 +8,7 @@ function Ordersuccess() {
   const navigate = useNavigate();
 
   const [order, setOrder] = useState([]);
-
+  // const [address,setAddress] = useState();
   useEffect(() => {
 
     const getOrderItem = async () => {
@@ -200,7 +200,7 @@ function Ordersuccess() {
 
         <button
           className="btn btn-outline-primary"
-          onClick={() => navigate("/product")}
+          onClick={() => navigate("/")}
         >
           Continue Shopping
         </button>

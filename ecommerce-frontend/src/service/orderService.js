@@ -51,7 +51,7 @@ const getOrderByIdAdmin = (id) => {
 const verifyPayment = async (paymentData) => {
 const token = localStorage.getItem("token");
     const response = await fetch(
-        "http://localhost:5000/order/verify-payment",
+        "http://localhost:5000/order/verify",
         {
             method: "POST",
 
